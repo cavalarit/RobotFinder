@@ -1,15 +1,15 @@
-'use strict';
+require('../models/contants');
 
-exports.getUserList = function(req, res) {
-  var auth = req.get('authentication');
-
-  if(auth === USER_TOKEN){
-    var userModel = require('../models/userModel');
-    var usersList = userModel.getUsers();
-    res.json(usersList);
-
-  }else{
-    res.status(401);
-    res.send();
-  }
+const user = (auth) => {
+  return new Promise((resolve, reject) => {
+    if (auth == USER_TOKEN) {
+      var userModel = require('../models/userModel');
+      var usersList = userModel.getUsers();      
+      resolve(JSON.stringify(usersList));
+    }else{
+      reject(JSON.stringify({'error':'Not found'}));
+    }
+  });
 };
+
+exports.user = user;
